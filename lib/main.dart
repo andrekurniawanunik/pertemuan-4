@@ -1,18 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:pml/basic_widget/pages.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const ProfileApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ProfileApp extends StatelessWidget {
+  const ProfileApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GoogleMapReviewScreen(),
+      home: Scaffold(
+        body: Center(
+          child: ProfileCard(),
+        ),
+      ),
     );
-   }
+  }
+}
+
+class ProfileCard extends StatelessWidget {
+  const ProfileCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 320,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.indigo.shade50,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        // mainAxisSize diubah dari min menjadi max (nilai default)
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Row(
+            children: [
+              const CircleAvatar(child: Icon(Icons.person)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Nama Mahasiswa',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text('Andre Kurniawan'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Row(
+            children: [
+              Expanded(child: Text('NIM')),
+              Text('24.52.0002'),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const Row(
+            children: [
+              Expanded(child: Text('Prodi')),
+              Text('S1 Teknologi Informasi'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
