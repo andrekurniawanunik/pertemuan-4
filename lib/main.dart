@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:pml/pages/shoping_screen.dart';
-import 'package:pml/pages/detail_shoping.dart';
-import 'package:pml/data/barang.dart';
+import 'package:go_router/go_router.dart';
+import 'domain/barang.dart';
+import 'pages/shoping_screen.dart';
+import 'pages/detail_shoping.dart';
+
+// Konfigurasi GoRouter
+final GoRouter _router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const ShopingScreen(),
+      routes: [
+        GoRoute(
+          path: 'detail',
+          builder: (context, state) {
+            // Mengambil data objek barang dari parameter extra
+            final barang = state.extra as Barang;
+            return DetailShopingScreen(barang: barang);
+          },
+        ),
+      ],
+    ),
+  ],
+);
 
 void main() {
   runApp(const MyApp());
@@ -12,15 +34,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    // Menggunakan MaterialApp.router untuk mendukung GoRouter
+    return MaterialApp.router(
+      title: 'Aplikasi Daftar Belanja',
+      routerConfig: _router,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorSchemeSeed: Colors.green, // Silakan ganti warna sesuai keinginan
+        useMaterial3: true,
       ),
-      routes: {
-        '/': (context) => const ShopingScreen(),
-        '/detail': (context) => const DetailShopingScreen(),
-      },
     );
   }
 }

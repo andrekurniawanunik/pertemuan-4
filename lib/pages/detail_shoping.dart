@@ -1,83 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:pml/domain/barang.dart';
+import '../domain/barang.dart';
 
 class DetailShopingScreen extends StatelessWidget {
-  const DetailShopingScreen({super.key});
+  final Barang barang;
+
+  const DetailShopingScreen({super.key, required this.barang});
 
   @override
   Widget build(BuildContext context) {
-    final barang = ModalRoute.of(context)!.settings.arguments as Barang;
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Detail Shopping"),
-        backgroundColor: Colors.blue,
+        title: Text(barang.nama_barang),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
       ),
       body: Column(
         children: [
           Expanded(
             child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Hero(
-                    tag: 'barang_${barang.id}', // Tag sama dengan yang ada di ShopingScreen
-                    child: Image.network(
-                      barang.foto,
-                      width: double.infinity,
-                      height: 250,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.image_not_supported, size: 100),
+                  Center(
+                    child: Hero(
+                      tag: 'barang_${barang.id}',
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network(
+                          barang.foto,
+                          height: 250,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.broken_image, size: 100);
+                          },
+                        ),
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          barang.nama_barang,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Harga: Rp ${barang.harga}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.green,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text('Stok Tersedia: ${barang.stok}'),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            const Icon(Icons.star, color: Colors.amber),
-                            const SizedBox(width: 4),
-                            Text('${barang.rating}'),
-                          ],
-                        ),
-                      ],
+                  const SizedBox(height: 20),
+                  Text(
+                    barang.nama_barang,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Rp ${barang.harga}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Chip(
+                        avatar: const Icon(Icons.inventory_2, size: 18),
+                        label: Text('Stok: ${barang.stok}'),
+                      ),
+                      const SizedBox(width: 10),
+                      Chip(
+                        avatar:
+                            const Icon(Icons.star, color: Colors.amber, size: 18),
+                        label: Text('Rating: ${barang.rating}'),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
           ),
-          // Footer Nama dan NIM
+          // Footer Identitas
           Container(
-            color: Colors.blue,
-            padding: const EdgeInsets.all(10),
             width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            color: Colors.green[100],
             child: const Text(
-              'Nama: [Isi Nama Anda] | NIM: [Isi NIM Anda]',
+              'Nama: Andre Kurniawan | NIM: [Isi NIM Anda]',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
           ),
         ],
